@@ -4,6 +4,8 @@ import {APIGatewayProxyResultV2, SNSEvent} from 'aws-lambda';
 export async function main(event: SNSEvent): Promise<APIGatewayProxyResultV2> {
   // console.log('event 👉', JSON.stringify(event, null, 2));
 
+  // throw new Error('throwing an error 💥');
+
   const records = event.Records.map(record => {
     const {Message, Subject, Type} = record.Sns;
 
