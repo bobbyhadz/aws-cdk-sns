@@ -33,31 +33,6 @@ export class CdkStarterStack extends cdk.Stack {
     // 👇 subscribe queue to topic
     topic.addSubscription(new subs.SqsSubscription(queue));
 
-    // 👇 create Dead letter Queue Lambda
-    const dlqLambda = new NodejsFunction(this, 'dlq-lambda', {
-      memorySize: 1024,
-      timeout: cdk.Duration.seconds(5),
-      runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'main',
-      entry: path.join(__dirname, `/../src/dlq-lambda/index.ts`),
-    });
-
-    // 👇 subscribe DLQ Lambda to sns topic
-    topic.addSubscription(new subs.LambdaSubscription(dlqLambda));
-
-    // 👇 create Dead letter Queue
-    const deadLetterQueue = new sqs.Queue(this, 'dead-letter-queue', {
-      retentionPeriod: cdk.Duration.minutes(30),
-    });
-
-    // 👇 set up the Dead letter Queue for the SNS topic
-    new sns.Subscription(this, 'sns-subscription', {
-      endpoint: dlqLambda.functionArn,
-      protocol: sns.SubscriptionProtocol.LAMBDA,
-      topic,
-      deadLetterQueue,
-    });
-
     new cdk.CfnOutput(this, 'snsTopicArn', {
       value: topic.topicArn,
       description: 'The arn of the SNS topic',

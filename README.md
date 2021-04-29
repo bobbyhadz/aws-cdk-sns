@@ -1,4 +1,4 @@
-# SNS Example in AWS CDK [SQS, Lambda, DLQ] - Complete Guide
+# SNS Example in AWS CDK [SQS, Lambda] - Complete Guide
 
 A repository for an article on
 [bobbyhadz.com](https://bobbyhadz.com/blog/aws-cdk-sns)
